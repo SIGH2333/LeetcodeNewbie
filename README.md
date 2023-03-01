@@ -1,0 +1,1 @@
+This is simply a repository for me to put up some notes when writing Leetcode :)

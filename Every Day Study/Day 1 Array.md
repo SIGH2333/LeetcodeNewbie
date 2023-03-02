@@ -8,7 +8,7 @@ Selected by 代码随想录
 
 1. No.704 https://leetcode.com/problems/binary-search/704 
 2. No.35 https://leetcode.com/problems/search-insert-position/
-3. No.34 https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/
+3. ~~No.34 https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/~~ 没时间完成
 4. No.27 https://leetcode.com/problems/remove-element/
 
 ## No. 704 Binary Search
@@ -181,6 +181,77 @@ class Solution {
             }
         }
         return -1;
+    }
+}
+```
+
+
+
+解法一 实际上也很好, 找左右边界的思路很值得学习,
+
+但是一开始看的时候绕进去了, 具体是被找边界的更新边界部分, 
+
+当时觉得, 以==为标准更新, 岂不是错过了另一半边的部分, 拿这里来说, 就是错失了 其实不会
+
+[1, 3, 8, 8, 8, 8, 8, 8, 8, 8, 10]
+
+```java
+// 截取更新左边界的代码部分
+while (left <= right) {
+  int middle = left + ((right - left) / 2);
+  if (nums[middle] >= target) { // 寻找左边界，nums[middle] == target的时候更新right
+      right = middle - 1;
+      leftBorder = right;
+  } else {
+      left = middle + 1;
+  }
+```
+
+解法一 完整代码
+
+```java
+class Solution {
+    int[] searchRange(int[] nums, int target) {
+        int leftBorder = getLeftBorder(nums, target);
+        int rightBorder = getRightBorder(nums, target);
+        // 情况一 两个边界出现没被赋值, 说明不在数组值域内
+        if (leftBorder == -2 || rightBorder == -2) return new int[]{-1, -1};
+        // 情况三 找到了左右边界且元素在数组中
+        if (rightBorder - leftBorder > 1) return new int[]{leftBorder + 1, rightBorder - 1};
+        // 情况二 找到了左右边界但元素不在数组中
+        return new int[]{-1, -1};
+    }
+
+    int getRightBorder(int[] nums, int target) {
+        int left = 0;
+        int right = nums.length - 1;
+        int rightBorder = -2; // 记录一下rightBorder没有被赋值的情况
+        while (left <= right) {
+            int middle = left + ((right - left) / 2);
+            if (nums[middle] > target) {
+                right = middle - 1;
+            } else { // 寻找右边界，nums[middle] == target的时候更新left
+                left = middle + 1;
+                rightBorder = left;
+            }
+        }
+        return rightBorder;
+    }
+
+    int getLeftBorder(int[] nums, int target) {
+        int left = 0;
+        int right = nums.length - 1;
+        int leftBorder = -2; // 记录一下leftBorder没有被赋值的情况
+        while (left <= right) {
+            int middle = left + ((right - left) / 2);
+            if (nums[middle] >= target) { // 寻找左边界，nums[middle] == target的时候更新right
+                right = middle - 1;
+                leftBorder = right;
+            } else {
+                left = middle + 1;
+            }
+        }
+        return leftBorder;
     }
 }
 ```

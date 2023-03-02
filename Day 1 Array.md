@@ -143,9 +143,9 @@ class Solution {
 }
 ```
 
-___
-
 ### No. 34 Find First and Last Position of Element in Sorted Array
+
+___
 
 我的思路和随想录提供的 解法二 一致
 

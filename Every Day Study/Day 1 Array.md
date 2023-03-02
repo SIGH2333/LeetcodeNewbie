@@ -67,7 +67,7 @@ class Solution {
 
 为什么左闭右闭的时候, left = mid + 1, right = mid - 1呢, 因为此时的mid我们已经知道不等于target了!
 
-## No. 27 移除元素
+## No. 27 Remove Element
 
 我的最终答案, 受到提示说使用双指针, 我想到了左右指针..
 
@@ -139,6 +139,48 @@ class Solution {
             while(right >= 0 && nums[right] == val) right--;
         }
         return left;
+    }
+}
+```
+
+### No. 34 Find First and Last Position of Element in Sorted Array
+
+___
+
+我的思路和随想录提供的 解法二 一致
+
+但在思考过程中想歪了,  从**找到的点延伸边界**才是正确的思路
+
+```java
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int index = BinarySearch(nums, target);
+        if (index == -1) return new int[] {-1, -1};
+        int left = index;
+            int right = index;
+            while(left > 0 && nums[left - 1] == target) {
+                left--;
+            }
+            while(right < nums.length - 1 && nums[right + 1] == target) {
+                right++;
+            }
+        return new int[] {left, right};
+    }
+
+    public int BinarySearch(int[] nums, int target) {
+        int left = 0;
+        int right = nums.length - 1;
+        while (left <= right) {
+            int mid = left + ((right - left) >> 1);
+            if (nums[mid] == target) {
+                return mid;
+            } else if (nums[mid] < target) {
+                left = mid + 1;
+            } else if (nums[mid] > target) {
+                right = mid - 1;
+            }
+        }
+        return -1;
     }
 }
 ```
